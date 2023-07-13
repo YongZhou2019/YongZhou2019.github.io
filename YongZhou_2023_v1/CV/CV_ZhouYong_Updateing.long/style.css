@@ -1,0 +1,82 @@
+
+
+h1 {
+  text-align: center;
+  font-size: 3em;
+  font-weight: bold;
+}
+
+h1 span {
+  color: #ff4500;
+  font-style: italic;
+}
+
+
+
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url('background-image.jpg');
+  background-size: cover;
+  background-position: center;
+  font-family: Arial, sans-serif;
+
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+
+
+body {
+  margin: 0 auto;
+  max-width: 660px; /* or your preferred max width */
+}
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>SMRT BioTech</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+      nav ul {
+        line-height: 1.5;
+      }
+
+      nav a {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    ...
+  </body>
+</html>
+
+p {
+  line-height: 1.5;
+  font-weight: bold;
+}
+
+ul {
+  line-height: 1.5;
+  font-weight: bold;
+}
+
+<p> We are aiming to <span class="highlight">revolutionize the world through science and technology, with a focus on genetics, genomics, bioinformatics, and AI applications.</span></p>
+
+video {
+  width: 50%;
+  height: auto;
+}
+
+section {
+  margin-bottom: 3rem; /* Adds 2 rem space below each section */
+}
+
