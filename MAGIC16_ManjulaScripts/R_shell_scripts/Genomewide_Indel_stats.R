@@ -1,18 +1,29 @@
 # R script to get stats on INDELs variant
-pacman::p_load( tidyverse, data.table, janitor)
-# stop_gained <- read.table(file="/home/thimmamp/MAGIC16/indels_results/genome1_stop_gained_details.txt", 
+rm(list=ls())
+pacman::p_load( tidyverse, data.table, janitor, pheatmap)
+# # stop_gained <- read.table(file="/home/thimmamp/MAGIC16/indels_results/genome1_stop_gained_details.txt", 
+# #                           sep="\t", header = T, stringsAsFactors = F)
+# 
+# stop_gained <- read.table(file="/home/thimmamp/MAGIC16/indels_results/genome1_stop_gained_details_MAPmanandRAPannotation.txt",
 #                           sep="\t", header = T, stringsAsFactors = F)
+# 
+# stop_lost <- read.table(file="/home/thimmamp/MAGIC16/indels_results/genome1_stop_lost_details_MAPmanandRAPannotation.txt",
+#                           sep="\t", header = T, stringsAsFactors = F)
+# 
+# start_lost <- read.table(file="/home/thimmamp/MAGIC16/indels_results/genome1_start_lost_details_MAPmanandRAPannotation.txt",
+#                          sep="\t", header = T, stringsAsFactors = F)
+# data <- read.csv(file="/home/thimmamp/MAGIC16/indels_results/MergedAgritraitgenes_in_genome1_Dispensablewithduplicategenes.txt",
+#                    sep="\t", header = TRUE, stringsAsFactors = FALSE)
 
-stop_gained <- read.table(file="/home/thimmamp/MAGIC16/indels_results/genome1_stop_gained_details_MAPmanandRAPannotation.txt",
-                          sep="\t", header = T, stringsAsFactors = F)
+ core <- read.csv(file="/home/thimmamp/MAGIC16/indels_results/genome1_Core_allorthologs_withRAP_MapmanAnnot_allvarianteffects.txt",
+                  sep="\t", header = TRUE, stringsAsFactors = FALSE)
+# disp <- read.csv(file="/home/thimmamp/MAGIC16/indels_results/genome1_Dipensable_allorthologs_withRAP_MapmanAnnot_allvarianteffects.txt",
+#                  sep="\t", header = TRUE, stringsAsFactors = FALSE)
 
-stop_lost <- read.table(file="/home/thimmamp/MAGIC16/indels_results/genome1_stop_lost_details_MAPmanandRAPannotation.txt",
-                          sep="\t", header = T, stringsAsFactors = F)
+ #specific <- read.csv(file="/home/thimmamp/MAGIC16/indels_results/genome1_Specific_allorthologs_withRAP_MapmanAnnot_allvarianteffects.txt",
+#                                 sep="\t", header = TRUE, stringsAsFactors = FALSE)
 
-start_lost <- read.table(file="/home/thimmamp/MAGIC16/indels_results/genome1_start_lost_details_MAPmanandRAPannotation.txt",
-                         sep="\t", header = T, stringsAsFactors = F)
-
-# ann <- read.table(file="/home/thimmamp/MAGIC16/indels_results/genome1_INS_Annotation_Summary.txt",
+ # ann <- read.table(file="/home/thimmamp/MAGIC16/indels_results/genome1_INS_Annotation_Summary.txt",
 #                   header=T, stringsAsFactors = F)
 
 # colnames(ann) <- c("Variant", "INDEL", "Location", "annotation")
@@ -22,7 +33,60 @@ start_lost <- read.table(file="/home/thimmamp/MAGIC16/indels_results/genome1_sta
 #   group_by(INDEL,Location ) %>% 
 #   count() #%>% 
 #   ggplot( ins_summary, aes(x=Location,y=Total) ) + geom_bar(stat="identity", position = "dodge")
-#stop_gained_gene_vars <- 
+
+
+variant <- "stop_lost" #stop_lost" #"exon_loss"  #, "stop_lost"
+ortho <- "core"
+
+
+## To get heat map of indels along with variation impact
+pdf(file =paste0("/home/thimmamp/MAGIC16/Visualisation/genome1_",ortho,"_GeneswithINDELS_",variant,"_heatmap.pdf"))
+core %>% 
+  filter( stop_lost > 1) %>% 
+  #filter(Name!="NA", FunctionalAnnotation!=" no annotation", stop_gained>0) %>% 
+  select(Name, Description, FunctionalAnnotation, INS, DELS, stop_lost) %>%
+  mutate(name_des = paste(Name, FunctionalAnnotation, sep = "_")) %>%
+  arrange(desc(stop_lost))%>% 
+  # write.table(file=paste0("genome1_",ortho,"_GeneswithINDELS_withcloneid_",variant,"_heatmap_data.txt"),
+  #             sep="\t", quote = FALSE,
+  #             row.names = FALSE)
+  select(name_des, INS, DELS, stop_lost) %>%
+  gather("events", "numbers", -name_des) %>%
+  ggplot(., aes(x = name_des, y = events, fill = numbers)) +
+  geom_tile()+
+  ggtitle(paste0(variant, " variant effect with impact more than 1 in ",ortho," genes")) +
+  ylab(paste0("INDELS with Variant impact ", variant))+
+  xlab(paste0("Cloneids with molecular functions for genes with ", variant))+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+dev.off()
+
+## histogram for genes with/without variant impact
+pdf(file =paste0("/home/thimmamp/MAGIC16/Visualisation/genome1_No_",variant,"_GeneswithDELS_from_",ortho,"_histogram.pdf"))
+disp %>% 
+  filter(stop_lost == 0) %>% 
+  ggplot(., aes(x=DELS))+geom_histogram() +
+  ggtitle(paste0("Genes with no ", variant, " variant effect in ",ortho," genes")) +
+  ylab(paste0("DELS with Variant impact ", variant))
+dev.off()
+
+#### To get bar plots abundant MF in core, disp, specific
+pdf(file =paste0("/home/thimmamp/MAGIC16/Visualisation/genome1_",ortho,"_AbundantFuctionalAnnotationofGeneswithINS_",variant,".pdf"))
+core %>%   
+#, start_lost>0, stop_lost>0,start_retained>0
+  select(Name, FunctionalAnnotation, INS, stop_gained) %>% 
+  filter(FunctionalAnnotation!= " no annotation", stop_gained==1) %>%
+  group_by(FunctionalAnnotation) %>%
+  summarise(COUNT=n()) %>%
+  arrange(desc(COUNT)) %>%
+  filter(COUNT > 1) %>%
+  head(20) %>%
+  ggplot(.,aes(x=FunctionalAnnotation, y=COUNT)) +
+  geom_bar(stat="identity", position = "dodge") +
+  ggtitle(paste0("Most abundant functions in genes with insertions\n for ",variant, " variant effect in ",ortho," genes")) +
+  ylab("#of times of FunctionalAnnotation")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+#dev.off()
+
 pdf("/home/thimmamp/MAGIC16/indels_results/stopgained_insertions_top10Funcs.pdf")
 stop_gained %>%
   filter(RAPGeneSymbol!='NA', Function!=" no annotation", INDEL_classification=="insertion") %>% 

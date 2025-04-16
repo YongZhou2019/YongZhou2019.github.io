@@ -1,0 +1,31 @@
+(base) thimmamp@kw61043:~/MAGIC16/indels_results$ awk -F'\t' 'BEGIN{total=0}{if($3>0)total+=$3}END{print total}' Nipponbare_AbsentGenes_from_genome*_with_mode_no_duplication_genic_InDelsStats_Details_testing.txt
+20189
+(base) thimmamp@kw61043:~/MAGIC16/indels_results$ awk -F'\t' 'BEGIN{total=0}{if($4>0)total+=$4}END{print total}' Nipponbare_AbsentGenes_from_genome*_with_mode_no_duplication_genic_InDelsStats_Details_testing.txt
+28353
+(base) thimmamp@kw61043:~/MAGIC16/indels_results$ awk -F'\t' 'BEGIN{total=0}{if($3>0)total+=$3}END{print total}' MH63RS3_AbsentGenes_from_genome*_with_mode_no_duplication_genic_InDelsStats_Details_testing.txt
+22615
+(base) thimmamp@kw61043:~/MAGIC16/indels_results$ awk -F'\t' 'BEGIN{total=0}{if($4>0)total+=$4}END{print total}' MH63RS3_AbsentGenes_from_genome*_with_mode_no_duplication_genic_InDelsStats_Details_testing.txt
+31587
+(base) thimmamp@kw61043:~/MAGIC16/indels_results$ awk -F'\t' 'BEGIN{total=0}{if($3>0)total+=$3}END{print total}' ZS97RS3_AbsentGenes_from_genome*_with_mode_no_duplication_genic_InDelsStats_Details_testing.txt
+21775
+(base) thimmamp@kw61043:~/MAGIC16/indels_results$ awk -F'\t' 'BEGIN{total=0}{if($4>0)total+=$4}END{print total}' ZS97RS3_AbsentGenes_from_genome*_with_mode_no_duplication_genic_InDelsStats_Details_testing.txt
+30932
+(base) thimmamp@kw61043:~/MAGIC16/indels_results$ grep 117425 GenomeVsNumofAbsentGenes.txt
+ARC	117425	genome7	genome7.117425.ARC.gset.specific	5956
+(base) thimmamp@kw61043:~/MAGIC16/indels_results$ awk -F'\t' 'BEGIN{total=0}{if($3>0)total+=$3}END{print total}' 117425_AbsentGenes_from_genome*_with_mode_no_duplication_genic_InDelsStats_Details_testing.txt
+21149
+(base) thimmamp@kw61043:~/MAGIC16/indels_results$ awk -F'\t' 'BEGIN{total=0}{if($4>0)total+=$4}END{print total}' 117425_AbsentGenes_from_genome*_with_mode_no_duplication_genic_InDelsStats_Details_testing.txt
+29913
+(base) thimmamp@kw61043:~/MAGIC16/indels_results$ grep 125619 GenomeVsNumofAbsentGenes.txt
+LM	125619	genome8	genome8.125619.LaMu.gset.specific	6177
+(base) thimmamp@kw61043:~/MAGIC16/indels_results$ awk -F'\t' 'BEGIN{total=0}{if($3>0)total+=$3}END{print total}' 125619_AbsentGenes_from_genome*_with_mode_no_duplication_genic_InDelsStats_Details_testing.txt
+21736
+(base) thimmamp@kw61043:~/MAGIC16/indels_results$ awk -F'\t' 'BEGIN{total=0}{if($4>0)total+=$4}END{print total}' 125619_AbsentGenes_from_genome*_with_mode_no_duplication_genic_InDelsStats_Details_testing.txt
+30424
+(base) thimmamp@kw61043:~/MAGIC16/indels_results$ grep 125827 GenomeVsNumofAbsentGenes.txt
+LX	125827	genome9	genome9.125827.LiXu.gset.specific	6224
+(base) thimmamp@kw61043:~/MAGIC16/indels_results$ awk -F'\t' 'BEGIN{total=0}{if($3>0)total+=$3}END{print total}' 125827_AbsentGenes_from_genome*_with_mode_no_duplication_genic_InDelsStats_Details_testing.txt
+21690
+(base) thimmamp@kw61043:~/MAGIC16/indels_results$ awk -F'\t' 'BEGIN{total=0}{if($4>0)total+=$4}END{print total}' 125827_AbsentGenes_from_genome*_with_mode_no_duplication_genic_InDelsStats_Details_testing.txt
+30681
+
